@@ -62,7 +62,7 @@
    || defined(__OpenBSD__) || defined(__linux__) \
    || defined(__EMSCRIPTEN__)
 #  include <poll.h>
-# elif !defined(__SYMBIAN32__)
+# elif !defined(__SYMBIAN32__) && !defined(ESP_PLATFORM)
 #  include <sys/poll.h>
 # endif
 # include <sys/types.h>
@@ -75,15 +75,23 @@
 #  include <sys/select.h>
 # endif
 # include <sys/socket.h>
-# include <sys/uio.h>
-# include <sys/un.h>
+# if !defined(ESP_PLATFORM)
+#  include <sys/uio.h>
+#  include <sys/un.h>
+# endif 
 # include <netinet/in.h>
-# if !defined(__SYMBIAN32__)
+# if !defined(__SYMBIAN32__) && !defined(ESP_PLATFORM)
 #  include <netinet/tcp.h>
 # endif
 # include <arpa/inet.h>
 # include <netdb.h>
-# include <net/if.h>
+# if !defined(ESP_PLATFORM)
+#  include <net/if.h>
+# else
+#  include "esp32_lwip.h"
+
+
+# endif
 # include <limits.h>
 # if defined(__sun)
 #  include <sys/filio.h>

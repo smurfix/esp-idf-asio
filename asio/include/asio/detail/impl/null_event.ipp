@@ -42,6 +42,8 @@ void null_event::do_wait()
   std::this_thread::sleep_until((std::chrono::steady_clock::time_point::max)());
 #elif defined(ASIO_WINDOWS) || defined(__CYGWIN__)
   ::Sleep(INFINITE);
+#elif defined (ESP_PLATFORM)
+  ::sleep(UINT_MAX);
 #else
   ::pause();
 #endif
