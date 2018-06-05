@@ -43,7 +43,9 @@ void null_event::do_wait()
 #elif defined(ASIO_WINDOWS) || defined(__CYGWIN__)
   ::Sleep(INFINITE);
 #elif defined (ESP_PLATFORM)
-  ::sleep(UINT_MAX);
+  while (true) {
+      ::sleep(UINT_MAX);
+  }
 #else
   ::pause();
 #endif
