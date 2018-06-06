@@ -19,8 +19,6 @@
 
 #ifdef ESP_PLATFORM
 # include "lwip/sockets.h"
-# include "esp32_err.h"
-# include "esp32_pthread.h"
 #endif
 
 #if defined(ASIO_HAS_STD_SYSTEM_ERROR)

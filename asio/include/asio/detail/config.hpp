@@ -11,6 +11,10 @@
 #ifndef ASIO_DETAIL_CONFIG_HPP
 #define ASIO_DETAIL_CONFIG_HPP
 
+#if defined(ESP_PLATFORM)
+# include "esp_asio_config.h"
+#endif // defined(ESP_PLATFORM)
+
 #if defined(ASIO_STANDALONE)
 # define ASIO_DISABLE_BOOST_ARRAY 1
 # define ASIO_DISABLE_BOOST_ASSERT 1
