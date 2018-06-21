@@ -75,8 +75,8 @@
 #  include <sys/select.h>
 # endif
 # include <sys/socket.h>
-#  include <sys/uio.h>
-#  include <sys/un.h>
+# include <sys/uio.h>
+# include <sys/un.h>
 # include <netinet/in.h>
 # if !defined(__SYMBIAN32__) && !defined(ESP_PLATFORM)
 #  include <netinet/tcp.h>
