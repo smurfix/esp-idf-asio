@@ -50,6 +50,7 @@ endpoint::endpoint(int family, unsigned short port_num) ASIO_NOEXCEPT
       asio::detail::socket_ops::host_to_network_short(port_num);
     data_.v4.sin_addr.s_addr = ASIO_OS_DEF(INADDR_ANY);
   }
+#ifdef CONFIG_LWIP_IPV6
   else
   {
     data_.v6.sin6_family = ASIO_OS_DEF(AF_INET6);
@@ -66,6 +67,7 @@ endpoint::endpoint(int family, unsigned short port_num) ASIO_NOEXCEPT
     data_.v6.sin6_addr.s6_addr[14] = 0; data_.v6.sin6_addr.s6_addr[15] = 0;
     data_.v6.sin6_scope_id = 0;
   }
+#endif
 }
 
 endpoint::endpoint(const asio::ip::address& addr,
@@ -82,6 +84,7 @@ endpoint::endpoint(const asio::ip::address& addr,
       asio::detail::socket_ops::host_to_network_long(
         addr.to_v4().to_uint());
   }
+#ifdef CONFIG_LWIP_IPV6
   else
   {
     data_.v6.sin6_family = ASIO_OS_DEF(AF_INET6);
@@ -95,6 +98,7 @@ endpoint::endpoint(const asio::ip::address& addr,
       static_cast<asio::detail::u_long_type>(
         v6_addr.scope_id());
   }
+#endif
 }
 
 void endpoint::resize(std::size_t new_size)
@@ -108,41 +112,52 @@ void endpoint::resize(std::size_t new_size)
 
 unsigned short endpoint::port() const ASIO_NOEXCEPT
 {
+#ifdef CONFIG_LWIP_IPV6
   if (is_v4())
+#endif
   {
     return asio::detail::socket_ops::network_to_host_short(
         data_.v4.sin_port);
   }
+#ifdef CONFIG_LWIP_IPV6
   else
   {
     return asio::detail::socket_ops::network_to_host_short(
         data_.v6.sin6_port);
   }
+#endif
 }
 
 void endpoint::port(unsigned short port_num) ASIO_NOEXCEPT
 {
+#ifdef CONFIG_LWIP_IPV6
   if (is_v4())
+#endif
   {
     data_.v4.sin_port
       = asio::detail::socket_ops::host_to_network_short(port_num);
   }
+#ifdef CONFIG_LWIP_IPV6
   else
   {
     data_.v6.sin6_port
       = asio::detail::socket_ops::host_to_network_short(port_num);
   }
+#endif
 }
 
 asio::ip::address endpoint::address() const ASIO_NOEXCEPT
 {
   using namespace std; // For memcpy.
+#ifdef CONFIG_LWIP_IPV6
   if (is_v4())
+#endif
   {
     return asio::ip::address_v4(
         asio::detail::socket_ops::network_to_host_long(
           data_.v4.sin_addr.s_addr));
   }
+#ifdef CONFIG_LWIP_IPV6
   else
   {
     asio::ip::address_v6::bytes_type bytes;
@@ -153,6 +168,7 @@ asio::ip::address endpoint::address() const ASIO_NOEXCEPT
 #endif // defined(ASIO_HAS_STD_ARRAY)
     return asio::ip::address_v6(bytes, data_.v6.sin6_scope_id);
   }
+#endif
 }
 
 void endpoint::address(const asio::ip::address& addr) ASIO_NOEXCEPT

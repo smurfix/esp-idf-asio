@@ -73,8 +73,10 @@ public:
   {
     if (is_v4())
       return sizeof(asio::detail::sockaddr_in4_type);
+#ifdef CONFIG_LWIP_IPV6
     else
       return sizeof(asio::detail::sockaddr_in6_type);
+#endif
   }
 
   // Set the underlying size of the endpoint in the native type.
@@ -124,7 +126,9 @@ private:
   {
     asio::detail::socket_addr_type base;
     asio::detail::sockaddr_in4_type v4;
+#ifdef CONFIG_LWIP_IPV6
     asio::detail::sockaddr_in6_type v6;
+#endif
   } data_;
 };
 

@@ -2115,6 +2115,7 @@ const char* inet_ntop(int af, const void* src, char* dest, size_t length,
         af, src, dest, static_cast<int>(length)), ec);
   if (result == 0 && !ec)
     ec = asio::error::invalid_argument;
+#ifdef CONFIG_LWIP_IPV6
   if (result != 0 && af == ASIO_OS_DEF(AF_INET6) && scope_id != 0)
   {
     using namespace std; // For strcat and sprintf.
@@ -2129,6 +2130,7 @@ const char* inet_ntop(int af, const void* src, char* dest, size_t length,
       sprintf(if_name + 1, "%lu", scope_id);
     strcat(dest, if_name);
   }
+#endif
   return result;
 #endif // defined(ASIO_WINDOWS) || defined(__CYGWIN__)
 }
@@ -2365,6 +2367,7 @@ int inet_pton(int af, const char* src, void* dest,
   int result = error_wrapper(::inet_pton(af, src_ptr, dest), ec);
   if (result <= 0 && !ec)
     ec = asio::error::invalid_argument;
+# ifdef CONFIG_LWIP_IPV6
   if (result > 0 && is_v6 && scope_id)
   {
     using namespace std; // For strchr and atoi.
@@ -2382,6 +2385,7 @@ int inet_pton(int af, const char* src, void* dest,
         *scope_id = atoi(if_name + 1);
     }
   }
+# endif
   return result;
 #endif // defined(ASIO_WINDOWS) || defined(__CYGWIN__)
 }
@@ -3362,6 +3366,7 @@ asio::error_code getaddrinfo(const char* host,
             sinptr->sin_port = port;
           break;
         }
+# ifdef CONFIG_LWIP_IPV6
       case ASIO_OS_DEF(AF_INET6):
         {
           sockaddr_in6_type* sin6ptr =
@@ -3370,6 +3375,7 @@ asio::error_code getaddrinfo(const char* host,
             sin6ptr->sin6_port = port;
           break;
         }
+# endif
       default:
         break;
       }

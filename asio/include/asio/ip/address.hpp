@@ -53,9 +53,11 @@ public:
   ASIO_DECL address(
       const asio::ip::address_v4& ipv4_address) ASIO_NOEXCEPT;
 
+#ifdef CONFIG_LWIP_IPV6
   /// Construct an address from an IPv6 address.
   ASIO_DECL address(
       const asio::ip::address_v6& ipv6_address) ASIO_NOEXCEPT;
+#endif
 
   /// Copy constructor.
   ASIO_DECL address(const address& other) ASIO_NOEXCEPT;
@@ -77,9 +79,11 @@ public:
   ASIO_DECL address& operator=(
       const asio::ip::address_v4& ipv4_address) ASIO_NOEXCEPT;
 
+#ifdef CONFIG_LWIP_IPV6
   /// Assign from an IPv6 address.
   ASIO_DECL address& operator=(
       const asio::ip::address_v6& ipv6_address) ASIO_NOEXCEPT;
+#endif
 
   /// Get whether the address is an IP version 4 address.
   bool is_v4() const ASIO_NOEXCEPT
@@ -90,14 +94,20 @@ public:
   /// Get whether the address is an IP version 6 address.
   bool is_v6() const ASIO_NOEXCEPT
   {
+#ifdef CONFIG_LWIP_IPV6
     return type_ == ipv6;
+#else
+    return false;
+#endif
   }
 
   /// Get the address as an IP version 4 address.
   ASIO_DECL asio::ip::address_v4 to_v4() const;
 
+#ifdef CONFIG_LWIP_IPV6
   /// Get the address as an IP version 6 address.
   ASIO_DECL asio::ip::address_v6 to_v6() const;
+#endif
 
   /// Get the address as a string.
   ASIO_DECL std::string to_string() const;
@@ -180,8 +190,10 @@ private:
   // The underlying IPv4 address.
   asio::ip::address_v4 ipv4_address_;
 
+#ifdef CONFIG_LWIP_IPV6
   // The underlying IPv6 address.
   asio::ip::address_v6 ipv6_address_;
+#endif
 };
 
 /// Create an address from an IPv4 address string in dotted decimal form,

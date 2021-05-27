@@ -16,6 +16,9 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
+
+#ifdef CONFIG_LWIP_IPV6
+
 #include <string>
 #include "asio/detail/array.hpp"
 #include "asio/detail/socket_types.hpp"
@@ -337,5 +340,7 @@ std::basic_ostream<Elem, Traits>& operator<<(
 #if defined(ASIO_HEADER_ONLY)
 # include "asio/ip/impl/address_v6.ipp"
 #endif // defined(ASIO_HEADER_ONLY)
+
+#endif // CONFIG_LWIP_IPV6
 
 #endif // ASIO_IP_ADDRESS_V6_HPP

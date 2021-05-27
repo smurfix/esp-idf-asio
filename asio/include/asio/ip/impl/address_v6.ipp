@@ -16,6 +16,8 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include "asio/detail/config.hpp"
+
+#ifdef CONFIG_LWIP_IPV6
 #include <cstring>
 #include <stdexcept>
 #include <typeinfo>
@@ -346,5 +348,7 @@ address_v6 make_address_v6(
 } // namespace asio
 
 #include "asio/detail/pop_options.hpp"
+
+#endif // CONFIG_LWIP_IPV6
 
 #endif // ASIO_IP_IMPL_ADDRESS_V6_IPP
